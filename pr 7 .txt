@@ -1,0 +1,277 @@
+# ! pip install nltk -U
+# ! pip install bs4 -U
+
+import nltk
+nltk.download('stopwords')
+nltk.download('punkt')
+nltk.download('wordnet')
+nltk.download('averaged_perceptron_tagger')
+
+import nltk
+para='Rajgad is a hill fort situated in the pune district'
+print(para)
+
+para.split()
+from nltk.tokenize import sent_tokenize
+from nltk.tokenize import word_tokenize
+
+import nltk
+nltk.download('punkt')
+nltk.download('punkt_tab')
+sent=sent_tokenize(para)
+sent[0]
+words = word_tokenize(para)
+words
+
+from nltk.corpus import stopwords
+swords=stopwords.words('english')
+swords
+
+x=[word for word in words if word not in swords]
+x
+
+from nltk.stem import PorterStemmer
+ps=PorterStemmer() 
+ps.stem('working')
+
+y=[ps.stem(word) for word in x]
+
+y
+from nltk.stem import WordNetLemmatizer
+
+wnl=WordNetLemmatizer()
+
+nltk.download('omw-1.4')
+wnl.lemmatize('working',pos='v')
+print(ps.stem('went'))
+print(wnl.lemmatize('went',pos='v'))
+
+z=[wnl.lemmatize(word,pos='v') for word in x]
+z
+
+
+import string
+string.punctuation
+
+t=[word for word in words if word not in string.punctuation]
+t
+
+from nltk import pos_tag
+import nltk
+nltk.download('averaged_perceptron_tagger_eng')
+
+pos_tag(t)
+
+from sklearn.feature_extraction.text import TfidfVectorizer
+tfidf=TfidfVectorizer()
+
+v=tfidf.fit_transform(t)
+v.shape
+
+import pandas as pd
+pd.DataFrame(v)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+The code you provided utilizes the Natural Language Toolkit (NLTK) and several other libraries to process text data. Here's an explanation of each part of the code:
+
+### 1. **Installing Required Libraries:**
+
+```python
+# ! pip install nltk -U
+# ! pip install bs4 -U
+```
+
+These two lines (commented out) are used to install or upgrade the necessary libraries `nltk` and `bs4` (BeautifulSoup). `nltk` is used for text processing, and `bs4` is commonly used for web scraping (though it's not utilized in the code).
+
+### 2. **Importing NLTK and Downloading Data:**
+
+```python
+import nltk
+nltk.download('stopwords')
+nltk.download('punkt')
+nltk.download('wordnet')
+nltk.download('averaged_perceptron_tagger')
+```
+
+* `nltk.download()` is used to download specific datasets and models required by NLTK:
+
+  * `'stopwords'`: A list of common words (e.g., "the", "is") that are often removed in text processing because they don't carry much meaning.
+  * `'punkt'`: A tokenizer that breaks the text into sentences and words.
+  * `'wordnet'`: A lexical database for English, which helps in lemmatization (reducing words to their base form).
+  * `'averaged_perceptron_tagger'`: A part-of-speech tagger to assign labels to words (e.g., noun, verb).
+
+### 3. **Text Setup:**
+
+```python
+para = 'Rajgad is a hill fort situated in the pune district'
+print(para)
+```
+
+* This defines a sample text (`para`), which is the sentence `"Rajgad is a hill fort situated in the pune district"`.
+* `print(para)` will output the sentence.
+
+### 4. **Tokenizing Text into Words:**
+
+```python
+para.split()
+```
+
+* `split()` splits the text by spaces, giving a list of words. It's a basic method for word tokenization, but NLTK provides better tokenizers for more complex tasks.
+
+```python
+from nltk.tokenize import sent_tokenize
+from nltk.tokenize import word_tokenize
+
+sent = sent_tokenize(para)
+print(sent[0])
+words = word_tokenize(para)
+print(words)
+```
+
+* `sent_tokenize()` splits the text into sentences.
+* `word_tokenize()` splits the text into words. This method uses advanced tokenization techniques (e.g., handling punctuation and special characters).
+
+### 5. **Removing Stop Words:**
+
+```python
+from nltk.corpus import stopwords
+swords = stopwords.words('english')
+print(swords)
+```
+
+* `stopwords.words('english')` retrieves a list of common English stop words (words that don’t provide significant meaning for tasks like text analysis).
+
+```python
+x = [word for word in words if word not in swords]
+print(x)
+```
+
+* This list comprehension removes any word from the `words` list that is in the `swords` list (i.e., the stop words).
+
+### 6. **Stemming (Porter Stemmer):**
+
+```python
+from nltk.stem import PorterStemmer
+ps = PorterStemmer()
+print(ps.stem('working'))
+```
+
+* A **stemmer** reduces a word to its base or root form (e.g., "working" becomes "work").
+* `PorterStemmer` is a popular stemming algorithm.
+* The example `'working'` is stemmed into `'work'`.
+
+```python
+y = [ps.stem(word) for word in x]
+print(y)
+```
+
+* This applies the stemmer to each word in the list `x` (words without stop words).
+
+### 7. **Lemmatization (WordNet Lemmatizer):**
+
+```python
+from nltk.stem import WordNetLemmatizer
+
+wnl = WordNetLemmatizer()
+
+nltk.download('omw-1.4')
+print(wnl.lemmatize('working', pos='v'))
+print(ps.stem('went'))
+print(wnl.lemmatize('went', pos='v'))
+```
+
+* **Lemmatization** reduces a word to its dictionary form (e.g., "working" becomes "work", "went" becomes "go").
+* The `WordNetLemmatizer` is used for this.
+* `pos='v'` indicates the part-of-speech as a verb for accurate lemmatization.
+* `'omw-1.4'` is the WordNet data download required for proper lemmatization.
+
+```python
+z = [wnl.lemmatize(word, pos='v') for word in x]
+print(z)
+```
+
+* This applies lemmatization to each word in the list `x`.
+
+### 8. **Removing Punctuation:**
+
+```python
+import string
+string.punctuation
+```
+
+* `string.punctuation` provides a string of all punctuation marks (`!"#$%&'()*+,-./:;<=>?@[\]^_`{|}\~\`).
+* This line checks all punctuation marks available in Python's `string` module.
+
+```python
+t = [word for word in words if word not in string.punctuation]
+print(t)
+```
+
+* This removes punctuation from the tokenized words list.
+
+### 9. **Part-of-Speech Tagging:**
+
+```python
+from nltk import pos_tag
+import nltk
+nltk.download('averaged_perceptron_tagger_eng')
+
+print(pos_tag(t))
+```
+
+* **POS tagging** assigns part-of-speech labels (e.g., noun, verb, adjective) to each word in the list `t`.
+* The `averaged_perceptron_tagger_eng` model is used to determine the POS tags.
+
+### 10. **TF-IDF Vectorization:**
+
+```python
+from sklearn.feature_extraction.text import TfidfVectorizer
+tfidf = TfidfVectorizer()
+
+v = tfidf.fit_transform(t)
+print(v.shape)
+```
+
+* **TF-IDF (Term Frequency-Inverse Document Frequency)** is used to convert a collection of text documents into a matrix of numbers that represents the importance of each word.
+* `TfidfVectorizer()` from `sklearn` is used to perform this transformation.
+* `fit_transform(t)` learns the TF-IDF model from the list `t` (tokens without stop words and punctuation) and transforms the text into a sparse matrix.
+* `v.shape` gives the shape of the TF-IDF matrix.
+
+### 11. **Creating a DataFrame:**
+
+```python
+import pandas as pd
+pd.DataFrame(v.toarray())
+```
+
+* This converts the sparse matrix `v` into a dense format (a NumPy array) and then creates a pandas DataFrame for easy viewing and analysis of the TF-IDF values.
+
+### Summary:
+
+The code demonstrates how to process text data by:
+
+1. Tokenizing text into words and sentences.
+2. Removing stop words.
+3. Applying stemming and lemmatization to reduce words to their base forms.
+4. Removing punctuation.
+5. Tagging parts of speech.
+6. Converting the text into a numerical format using TF-IDF vectorization.
+
+These steps are often used in natural language processing (NLP) to prepare text data for further analysis, such as text classification, sentiment analysis, or information retrieval.
+
+
